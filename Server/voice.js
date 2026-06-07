@@ -1,0 +1,1 @@
+module.exports = { getToken: (roomId, userId) => ({ token: '', channel: roomId }) };

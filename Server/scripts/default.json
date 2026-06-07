@@ -1,0 +1,76 @@
+{
+  "id": "default",
+  "title": "隔壁的陌生人：现代浮世绘",
+  "subtitle": "一墙隔生死，百态见人心",
+  "minPlayers": 3,
+  "maxPlayers": 5,
+  "phaseDurations": { "reading": 10, "investigate": 15, "vote": 5 },
+  "characters": {
+    "chen_mei": { "id": "chen_mei", "name": "陈梅", "room": "303", "role": "全职太太", "color": "#FF2A7A" },
+    "wang_dajun": { "id": "wang_dajun", "name": "王大军", "room": "301", "role": "房东", "color": "#8C0000" },
+    "zhou_xue": { "id": "zhou_xue", "name": "周雪", "room": "304", "role": "自媒体博主", "color": "#FF2A7A" },
+    "lin_qiang": { "id": "lin_qiang", "name": "林强", "room": "302", "role": "程序员", "color": "#00F0FF" },
+    "sun_yu": { "id": "sun_yu", "name": "孙宇", "room": "305", "role": "外卖员", "color": "#8C0000" }
+  },
+  "secrets": {
+    "chen_mei": { "secret": "你是这栋楼的幕后操盘手。你用温柔做刀，借王大军的手除掉了勒索你的赵凯。", "goal": "让王大军承担所有罪责，撇清自己的教唆嫌疑。", "forbidden": "绝不能承认碎纸条是你写的，绝不能承认你与周雪有金钱交易。" },
+    "wang_dajun": { "secret": "你用烟灰缸重击了赵凯的后脑。但孙宇在你离开后又补了一钢管。", "goal": "把嫌疑引向其他人，强调自己是被逼急的老实人。", "forbidden": "绝不能承认偷拍周雪，绝不能承认赌博欠债28万。" },
+    "zhou_xue": { "secret": "你被赵凯用买粉证据勒索。你付了4万给陈梅解决赵凯，同时操控孙宇的感情。", "goal": "撇清与陈梅的交易，把孙宇推出去当替罪羊。", "forbidden": "绝不能承认买粉造假，绝不能承认操控孙宇。" },
+    "lin_qiang": { "secret": "你是这栋楼的上帝。你监控所有人，切断网络，坐看厮杀，还勒索了赵凯。", "goal": "以揭露真相的姿态掌控全局，但隐藏自己切断网络的罪行。", "forbidden": "绝不能承认主动切断网络，绝不能承认勒索赵凯。" },
+    "sun_yu": { "secret": "你为了保护周雪，用钢管对重伤的赵凯进行了二次补击。", "goal": "保护周雪，但若发现被利用，要让她付出代价。", "forbidden": "绝不能承认补了那一钢管。" }
+  },
+  "clues": {
+    "clue_1": { "id": "clue_1", "title": "致命的撞击", "text": "死者赵凯，后脑受钝器重创致死。死亡时间凌晨1:00-2:00。", "color": "#8C0000", "icon": "💀" },
+    "clue_2": { "id": "clue_2", "title": "破碎的烟灰缸", "text": "烟灰缸碎片沾有血迹，提取到带有机油污渍的指纹。底部刻字：「赠大军哥——陈梅」。", "color": "#8C0000", "icon": "🚬" },
+    "clue_3": { "id": "clue_3", "title": "神秘的钢管", "text": "一楼垃圾桶发现钢管，用酒精湿巾擦拭过，螺纹缝隙残留血迹，无指纹。", "color": "#8C0000", "icon": "🔧" },
+    "clue_6": { "id": "clue_6", "title": "剪枝笔记", "text": "陈梅记事本：「5月20日，赵凯胃口越来越大，必须要剪枝了。大军听话，老实人好用。」", "color": "#FF2A7A", "icon": "📓" },
+    "clue_7": { "id": "clue_7", "title": "碎纸条的秘密", "text": "拼接碎纸条：「赵凯说你根本不是个男人……大军哥，我真的好怕……」字迹与陈梅一致。", "color": "#FF2A7A", "icon": "📃" },
+    "clue_11": { "id": "clue_11", "title": "流量密码", "text": "赵凯发给周雪的私信：「你买粉、伪造人设的证据都在我这。不想封号，准备10万。」", "color": "#FF2A7A", "icon": "📱" },
+    "clue_12": { "id": "clue_12", "title": "巨额转账", "text": "案发当晚21:30，周雪向陈梅转账4万。备注：「下半年推广合作费及咨询费」。", "color": "#FF2A7A", "icon": "💸" },
+    "clue_13": { "id": "clue_13", "title": "小哥的备胎公约", "text": "孙宇外卖箱便利贴（周雪字迹）：「等我把这起合同处理完，我们离开这里重新开始。」", "color": "#FF2A7A", "icon": "📋" },
+    "clue_14": { "id": "clue_14", "title": "深夜的订单", "text": "孙宇GPS定位：凌晨1:45才离开小区，滞留1.5小时。", "color": "#8C0000", "icon": "📍" },
+    "clue_15": { "id": "clue_15", "title": "沾血的纸巾", "text": "孙宇电动车内酒精湿巾粘有带铁锈味的暗红血迹及铁锈粉末。", "color": "#8C0000", "icon": "🧻" },
+    "clue_16": { "id": "clue_16", "title": "虚拟监控后台", "text": null, "color": "#00F0FF", "lockedBy": "lin_qiang", "icon": "📹" },
+    "clue_17": { "id": "clue_17", "title": "音频波形图", "text": null, "color": "#00F0FF", "lockedBy": "lin_qiang", "hasAudio": true, "icon": "🎙️" },
+    "clue_18": { "id": "clue_18", "title": "黑客的勒索信", "text": null, "color": "#00F0FF", "lockedBy": "lin_qiang", "icon": "📧" },
+    "clue_19": { "id": "clue_19", "title": "网络嗅探日志", "text": null, "color": "#00F0FF", "lockedBy": "lin_qiang", "icon": "📡" },
+    "clue_20": { "id": "clue_20", "title": "阳台上的脚印", "text": "302室阳台与301室空调外机上有42码运动鞋划痕，与林强跑鞋纹路一致。", "color": "#00F0FF", "icon": "👟" }
+  },
+  "hiddenClueContent": {
+    "clue_16": "林强自建的非法全楼监控系统日志：24小时保持录制。但昨晚1:15-1:45期间，3楼走廊监控出现暂停并黑屏30分钟。操作源IP指向本地。",
+    "clue_17": "林强服务器捕获的3楼环境音频。对白摘录——男声A(赵凯)：「你敢打老子？我废了你！」男声B(王大军)：「……是你逼我的……」紧接着传出剧烈的水晶碎裂声、闷响以及人体倒地声。",
+    "clue_18": "5月21日林强发出的匿名加密邮件：「赵凯，你威胁陈梅和周雪的云端记录已经被我全盘拦截。今晚12点前，把敲诈王大军的3万直接转入我的比特币账户。」",
+    "clue_19": "日志记录显示，案发当晚1:10，302室（林强）利用嗅探技术对3楼进行了局域网拒绝服务攻击（DDoS），切断了302/303/304向外的全部网络信号。"
+  },
+  "voting": {
+    "round1": { "title": "法理之票", "question": "谁在物理上直接导致了赵凯的死亡？", "options": ["陈梅","王大军","周雪","林强","孙宇"] },
+    "round2": { "title": "道德之票", "question": "谁是最令人发指的心理教唆者？", "options": ["陈梅","王大军","周雪","林强","孙宇"] }
+  },
+  "answers": {
+    "round1": "王大军",
+    "round2": "陈梅"
+  },
+  "truth": {
+    "killer": "王大军",
+    "accomplice": "孙宇",
+    "mastermind": "陈梅",
+    "bystander": "林强",
+    "conclusion": "雪崩时，没有一片雪花是无辜的。"
+  },
+  "timeline": [
+    { "time": "21:30", "event": "周雪向陈梅转账4万元", "icon": "💰" },
+    { "time": "23:00", "event": "赵凯发送勒索私信给周雪", "icon": "📱" },
+    { "time": "01:10", "event": "林强切断3楼网络信号", "icon": "💻" },
+    { "time": "01:15", "event": "全楼监控黑屏30分钟", "icon": "📹" },
+    { "time": "01:??", "event": "王大军用烟灰缸重击赵凯后脑", "icon": "💥" },
+    { "time": "01:45", "event": "孙宇用钢管补刀后离开小区", "icon": "🏃" }
+  ],
+  "legalConclusion": "本案中，陈梅教唆他人故意杀人，依据《刑法》第二十九条，构成故意杀人罪共犯。王大军被教唆实施杀人，依据《刑法》第二百三十二条，处死刑、无期徒刑或十年以上有期徒刑。本故事旨在训练逻辑推理与法治意识，任何违法行为都将受到法律制裁。",
+  "aiStrategies": {
+    "chen_mei": { "cluePriority": ["clue_7","clue_6","clue_12","clue_2","clue_1","clue_3","clue_14","clue_15","clue_20"], "vote": {"round1":"王大军","round2":"王大军"}, "chat": ["大军哥平时人挺好的，肯定是被逼急了","赵凯那种人，谁碰到谁倒霉","周雪那孩子，太年轻了"] },
+    "wang_dajun": { "cluePriority": ["clue_14","clue_15","clue_3","clue_1","clue_2","clue_7","clue_6","clue_20"], "vote": {"round1":"孙宇","round2":"陈梅"}, "chat": ["我那天确实在，但我没下死手啊","孙宇那小子才可疑，他一直围着周雪转","陈梅？她就是个普通邻居"] },
+    "zhou_xue": { "cluePriority": ["clue_11","clue_13","clue_12","clue_14","clue_1","clue_3","clue_20"], "vote": {"round1":"孙宇","round2":"陈梅"}, "chat": ["孙宇对我确实有点...过度关心","陈梅姐人很好，经常帮我出主意","赵凯？我根本不认识他"] },
+    "lin_qiang": { "cluePriority": ["clue_20","clue_16","clue_17","clue_18","clue_19","clue_1","clue_2"], "vote": {"round1":"王大军","round2":"陈梅"}, "chat": ["网络日志显示了一些有趣的东西","作为程序员，我习惯看数据说话","监控不会说谎"] },
+    "sun_yu": { "cluePriority": ["clue_15","clue_14","clue_3","clue_13","clue_1","clue_2","clue_20"], "vote": {"round1":"王大军","round2":"周雪"}, "chat": ["周雪让我做什么我都会做","王大军那个房东，早就看他不顺眼了","我只是个送外卖的"] }
+  }
+}

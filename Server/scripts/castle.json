@@ -1,0 +1,58 @@
+{
+  "id": "castle",
+  "title": "古堡惊魂：血色晚宴",
+  "subtitle": "暴风雨夜，宾客逐一消失",
+  "minPlayers": 3,
+  "maxPlayers": 5,
+  "phaseDurations": { "reading": 10, "investigate": 15, "vote": 5 },
+  "characters": {
+    "countess": { "id": "countess", "name": "伯爵夫人", "room": "主卧", "role": "城堡主人", "color": "#FF2A7A" },
+    "butler": { "id": "butler", "name": "老管家", "room": "佣人房", "role": "管家", "color": "#8C0000" },
+    "detective": { "id": "detective", "name": "私家侦探", "room": "客房", "role": "侦探", "color": "#00F0FF" },
+    "heiress": { "id": "heiress", "name": "远房侄女", "room": "阁楼", "role": "继承人", "color": "#FF2A7A" },
+    "chef": { "id": "chef", "name": "神秘厨师", "room": "厨房", "role": "厨师", "color": "#8C0000" }
+  },
+  "secrets": {
+    "countess": { "secret": "你是城堡的继承人，但遗嘱有争议。你知道死者掌握了一份对你有利的证据。", "goal": "隐藏遗嘱真相，将嫌疑引向别人。", "forbidden": "不能承认你伪造了遗嘱附件。" },
+    "butler": { "secret": "你服侍了伯爵三十年，知道城堡里所有暗道。你亲眼看到伯爵夫人从死者房间出来。", "goal": "保护伯爵夫人，但也不能让自己成为替罪羊。", "forbidden": "不能泄露暗道的存在。" },
+    "detective": { "secret": "你其实不是真正的侦探，而是十年前被伯爵逐出的私生子。你回来是为了复仇。", "goal": "找出真凶，同时隐藏自己的身份。", "forbidden": "不能暴露真实身份。" },
+    "heiress": { "secret": "你伪造了继承权文件，但死者生前威胁要揭发你。", "goal": "确保继承权到手。", "forbidden": "不能承认伪造文件。" },
+    "chef": { "secret": "你是十年前被开除的仆人，那晚的晚宴是你下的毒，但毒并不致死。", "goal": "让别人相信是刀杀，掩盖自己下毒的事实。", "forbidden": "不能承认在食物中动了手脚。" }
+  },
+  "clues": {
+    "clue_1": { "id": "clue_1", "title": "打碎的酒杯", "text": "水晶酒杯碎片，酒液中有微量苦杏仁味。", "color": "#8C0000", "icon": "🍷" },
+    "clue_2": { "id": "clue_2", "title": "神秘信件", "text": "一封被烧毁一半的信，残存字迹：「……明晚，你的一切都将结束……」", "color": "#FF2A7A", "icon": "📃" },
+    "clue_3": { "id": "clue_3", "title": "暗道地图", "text": "城堡地下通道地图，标记了主卧到佣人房的路线。", "color": "#8C0000", "icon": "🗺️" },
+    "clue_4": { "id": "clue_4", "title": "遗嘱附件", "text": "遗嘱附页，签名处有被刮擦重新书写的痕迹。", "color": "#FF2A7A", "icon": "📜" },
+    "clue_5": { "id": "clue_5", "title": "私生子出生证明", "text": "一份医院的出生记录，父亲栏写着伯爵的名字。", "color": "#00F0FF", "icon": "📄" },
+    "clue_6": { "id": "clue_6", "title": "厨房垃圾桶里的空药瓶", "text": "一个没有标签的小玻璃瓶，内壁残留白色粉末。", "color": "#8C0000", "icon": "🧪" },
+    "clue_7": { "id": "clue_7", "title": "被撬开的保险箱", "text": "书房保险箱被撬开，里面的文件不翼而飞。", "color": "#8C0000", "icon": "🔒" }
+  },
+  "hiddenClueContent": {},
+  "voting": {
+    "round1": { "title": "法理之票", "question": "谁是直接导致伯爵死亡的凶手？", "options": ["伯爵夫人","老管家","私家侦探","远房侄女","神秘厨师"] },
+    "round2": { "title": "道德之票", "question": "谁在幕后推动了这场悲剧？", "options": ["伯爵夫人","老管家","私家侦探","远房侄女","神秘厨师"] }
+  },
+  "answers": { "round1": "老管家", "round2": "伯爵夫人" },
+  "truth": {
+    "killer": "老管家",
+    "accomplice": "神秘厨师",
+    "mastermind": "伯爵夫人",
+    "bystander": "私家侦探",
+    "conclusion": "暴风雨过后，古堡的秘密永远沉入黑暗。"
+  },
+  "timeline": [
+    { "time": "20:00", "event": "晚宴开始，宾客入席", "icon": "🍽️" },
+    { "time": "20:30", "event": "伯爵离开餐桌前往书房", "icon": "🚶" },
+    { "time": "21:00", "event": "女仆发现伯爵倒在地上", "icon": "💀" },
+    { "time": "21:15", "event": "众人聚集在书房门口", "icon": "👥" }
+  ],
+  "legalConclusion": "本故事纯属虚构，旨在训练逻辑推理与法治意识。任何违法行为都将受到法律制裁。",
+  "aiStrategies": {
+    "countess": { "cluePriority": ["clue_2","clue_4","clue_1"], "vote": {"round1":"老管家","round2":"神秘厨师"}, "chat": ["我什么都不知道……","那封信是谁写的？"] },
+    "butler": { "cluePriority": ["clue_3","clue_1","clue_7"], "vote": {"round1":"神秘厨师","round2":"伯爵夫人"}, "chat": ["我服务了伯爵三十年……","暗道的事情不能提。"] },
+    "detective": { "cluePriority": ["clue_5","clue_7","clue_2"], "vote": {"round1":"老管家","round2":"伯爵夫人"}, "chat": ["真相只有一个。","出生证明不会说谎。"] },
+    "heiress": { "cluePriority": ["clue_4","clue_2","clue_6"], "vote": {"round1":"神秘厨师","round2":"老管家"}, "chat": ["遗嘱是我的！","那封信是假的。"] },
+    "chef": { "cluePriority": ["clue_6","clue_1","clue_7"], "vote": {"round1":"老管家","round2":"伯爵夫人"}, "chat": ["我只是做菜的……","酒里的东西不是我放的。"] }
+  }
+}

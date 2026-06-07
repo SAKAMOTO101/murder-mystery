@@ -1,0 +1,1 @@
+const MurderConfig = { characters: {}, clues: {}, voting: {} };
