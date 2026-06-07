@@ -1,8 +1,1 @@
-﻿{
-  "name": "murder-mystery",
-  "version": "1.0.0",
-  "description": "剧本杀线上游戏",
-  "scripts": {
-    "start": "node Server/server.js"
-  }
-}
+{"name":"murder-mystery","version":"1.0.0"}
