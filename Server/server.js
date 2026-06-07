@@ -9,7 +9,26 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' }, pingInterval: 10000, pingTimeout: 5000 });
 
-app.use(express.static(path.join(__dirname, '../public')));
+// 静态文件服务 —— 同时兼容本地和 Render 的目录结构
+const staticPath = path.join(__dirname, '..', 'public'); // 本地结构
+const fallbackPath = path.join(__dirname, 'public');     // Render 可能的结构
+app.use(express.static(staticPath));
+app.use(express.static(fallbackPath));
+
+// 明确提供根路径的 index.html
+app.get('/', (req, res) => {
+  const indexPath = path.join(staticPath, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    const fallbackIndex = path.join(fallbackPath, 'index.html');
+    if (fs.existsSync(fallbackIndex)) {
+      res.sendFile(fallbackIndex);
+    } else {
+      res.status(404).send('index.html not found');
+    }
+  }
+});
 
 // ========== 数据库与工具加载 ==========
 const { RoomStore, TokenStore, redis, serializeRoom, restoreRoom } = require('./redis');
