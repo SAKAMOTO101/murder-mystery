@@ -9,24 +9,40 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' }, pingInterval: 10000, pingTimeout: 5000 });
 
-// 静态文件服务 —— 同时兼容本地和 Render 的目录结构
-const staticPath = path.join(__dirname, '..', 'public'); // 本地结构
-const fallbackPath = path.join(__dirname, 'public');     // Render 可能的结构
-app.use(express.static(staticPath));
-app.use(express.static(fallbackPath));
+// 动态寻找 public 目录
+let publicPath = path.join(__dirname, '..', 'public');
+if (!fs.existsSync(publicPath)) {
+  publicPath = path.join(__dirname, 'public');
+}
+if (!fs.existsSync(publicPath)) {
+  // 再尝试更灵活的查找
+  const rootDirs = fs.readdirSync(path.join(__dirname, '..'));
+  const match = rootDirs.find(d => d.toLowerCase() === 'public');
+  if (match) publicPath = path.join(__dirname, '..', match);
+}
+console.log('[静态文件路径]', publicPath);
+app.use(express.static(publicPath));
 
-// 明确提供根路径的 index.html
+// 调试路由
+app.get('/debug', (req, res) => {
+  const dir = __dirname;
+  const parent = path.join(__dirname, '..');
+  res.json({
+    __dirname: dir,
+    filesInDir: fs.readdirSync(dir),
+    filesInParent: fs.existsSync(parent) ? fs.readdirSync(parent) : 'parent not found',
+    publicExists: fs.existsSync(publicPath),
+    publicContents: fs.existsSync(publicPath) ? fs.readdirSync(publicPath) : null
+  });
+});
+
+// 根路由
 app.get('/', (req, res) => {
-  const indexPath = path.join(staticPath, 'index.html');
+  const indexPath = path.join(publicPath, 'index.html');
   if (fs.existsSync(indexPath)) {
     res.sendFile(indexPath);
   } else {
-    const fallbackIndex = path.join(fallbackPath, 'index.html');
-    if (fs.existsSync(fallbackIndex)) {
-      res.sendFile(fallbackIndex);
-    } else {
-      res.status(404).send('index.html not found');
-    }
+    res.status(404).send('index.html not found. Public path: ' + publicPath);
   }
 });
 
@@ -285,7 +301,6 @@ io.on('connection', (socket) => {
     }
   });
 
-  // ==================== 创建房间（修复后） ====================
   socket.on('room:create', async (options, callback) => {
     if (typeof options === 'function') { callback = options; options = {}; }
     const parsed = RoomCreateSchema.safeParse(options);
@@ -303,15 +318,9 @@ io.on('connection', (socket) => {
       phaseDeadline: null, aiEnabled: false, phaseTimer: null, createdAt: Date.now()
     };
 
-    // 将创建者自动加入玩家列表
     room.players[socket.id] = {
-      id: socket.id,
-      characterId: null,
-      characterName: '待选择',
-      isReady: false,
-      isOnline: true,
-      joinedAt: Date.now(),
-      isAI: false
+      id: socket.id, characterId: null, characterName: '待选择',
+      isReady: false, isOnline: true, joinedAt: Date.now(), isAI: false
     };
 
     roomsCache.set(roomId, room);
@@ -320,9 +329,7 @@ io.on('connection', (socket) => {
     await TokenStore.set(token, { roomId, socketId: socket.id });
     await RoomStore.set(roomId, room);
 
-    // 创建房间后立即广播房间状态
     io.to(roomId).emit('room:update', getRoomState(room));
-
     callback({ success: true, roomId, token });
   });
 
@@ -351,38 +358,27 @@ io.on('connection', (socket) => {
     io.to(socket.data.roomId).emit('room:update', getRoomState(room));
   });
 
-  // ==================== 关键修复：player:ready 事件 ====================
   socket.on('player:ready', () => {
     const room = roomsCache.get(socket.data.roomId);
     if (!room?.players[socket.id]) return;
     room.players[socket.id].isReady = true;
-
     const onlinePlayers = Object.values(room.players).filter(p => p.isOnline);
     const humanPlayers = onlinePlayers.filter(p => !p.isAI);
     const allHumansReady = humanPlayers.every(p => p.isReady);
-
-    // 如果开启了AI补位，并且所有真人玩家都准备了，就先创建AI再开始游戏
     if (room.aiEnabled && allHumansReady && humanPlayers.length >= 1) {
       const script = getScript(room.scriptId);
       const takenChars = onlinePlayers.map(p => p.characterId).filter(Boolean);
       const availableChars = Object.keys(script.characters).filter(c => !takenChars.includes(c));
-
-      // 用AI填充剩余角色
       availableChars.forEach(charId => {
-        const ai = new AIPlayer(
-          charId, room.id, roomsCache, io, getRoomState,
+        const ai = new AIPlayer(charId, room.id, roomsCache, io, getRoomState,
           getCharacterNames(script), script.secrets, script.hiddenClueContent,
-          script.aiStrategies?.[charId] || {}
-        );
+          script.aiStrategies?.[charId] || {});
         ai.start();
       });
-
-      // 开始游戏
       startGame(room, script);
     } else if (!room.aiEnabled && allHumansReady && humanPlayers.length >= 3) {
       startGame(room, getScript(room.scriptId));
     }
-
     io.to(socket.data.roomId).emit('room:update', getRoomState(room));
   });
 
@@ -395,7 +391,6 @@ io.on('connection', (socket) => {
     io.to(room.id).emit('phase:change', 'reading');
   }
 
-  // ==================== 其余事件处理保持不变 ====================
   socket.on('secret:request', () => {
     const room = roomsCache.get(socket.data.roomId);
     if (!room) return;
@@ -507,7 +502,6 @@ io.on('connection', (socket) => {
     if (!room?.players[socket.id]) return;
     room.players[socket.id].isOnline = false;
     io.to(roomId).emit('room:update', getRoomState(room));
-
     setTimeout(() => {
       const freshRoom = roomsCache.get(roomId);
       if (!freshRoom) return;
